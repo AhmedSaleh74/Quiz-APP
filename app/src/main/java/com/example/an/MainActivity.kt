@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         nextButton.isEnabled = true
         answerText.isEnabled= true
         countryCapitals.shuffle()
+        answerText.setSelection(0)
         questionText.text = "What is the capital of ${countryCapitals[index].country}"
     }
     fun next(view: View) {

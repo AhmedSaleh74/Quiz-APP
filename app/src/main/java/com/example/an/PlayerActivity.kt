@@ -1,16 +1,19 @@
 package com.example.an
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
@@ -18,6 +21,9 @@ import androidx.core.widget.addTextChangedListener
 class PlayerActivity : AppCompatActivity() {
     lateinit var playerNameText: EditText
     lateinit var playButton: Button
+    lateinit var statsButton: Button
+    lateinit var finalPlayerWin:TextView
+    lateinit var file : SharedPreferences
     val players = mutableListOf<Player>()
     val freez = mutableListOf<String>()
     var playerAudio: MediaPlayer? = null
@@ -42,7 +48,11 @@ class PlayerActivity : AppCompatActivity() {
                     playerAudio?.start()
                 }
             }
-        } else {
+            if (players.isNotEmpty()){
+                statsButton.isEnabled = true
+            }
+        }
+        else {
             val playerName = playerNameText.text.toString().lowercase().trim()
             outGame++
             if (outGame > 2){
@@ -64,15 +74,61 @@ class PlayerActivity : AppCompatActivity() {
         }
         playerNameText = findViewById(R.id.playerNameText)
         playButton = findViewById(R.id.playButton)
+        statsButton = findViewById(R.id.statsButton)
+        finalPlayerWin = findViewById(R.id.finalPlayerWin)
 
         playerNameText.addTextChangedListener {
             playButton.isEnabled = playerNameText.text.isNotEmpty()
         }
+//        file = getSharedPreferences("players", MODE_PRIVATE ) //create or open file (preferences)
+//        val playerJsonString = file.getString("players","")
+//        if (playerJsonString != "" && playerJsonString != null){
+//            val playerWinners:MutableList<String> = Json.decodeFromString(playerJsonString) //Use Kotlinx Serialization
+//            val winnersString = playerWinners.joinToString(", ")
+//            finalPlayerWin.text = winnersString
+//        }
 
+        // الطريقه العاديه
+        file = getSharedPreferences("playerWin", MODE_PRIVATE)
+        val playerString = file.getString("playerWin","")
+        playButton.isEnabled = file.getBoolean("playButton",false)
+        if (!playerString.isNullOrEmpty()){
+            val winners = playerString.split(",").filter { it.isNotEmpty() }.joinToString(", ")
+            finalPlayerWin.text = "Winners : $winners"
+        }
     }
 
     override fun onDestroy() {
         playerAudio?.stop()
+//            if (players.isNotEmpty()){   // Use Kotlinx Serialization
+//                val currentWinner = players.maxBy {it.score}
+//                val playerJsonString = file.getString("players", "")
+//                var playerWinners:MutableList<String> = mutableListOf()
+//                if (playerJsonString != null){
+//                    playerWinners = Json.decodeFromString(playerJsonString)
+//                }
+//                playerWinners.add(currentWinner.name)
+//                val updatedJsonString = Json.encodeToString(playerWinners)
+//                file.edit {
+//                    putString("players", updatedJsonString)
+//                }
+//        }
+
+        // الطريقه العاديه
+        if (players.isNotEmpty()){
+            val currentWinner = players.maxBy {it.score}
+            val playerString = file.getString("playerWin", "")
+            var playerWinners:MutableList<String> = mutableListOf()
+            if (playerString != null){
+                playerWinners = playerString.split(",").filter{it.isNotEmpty()}.toMutableList()
+            }
+            playerWinners.add(currentWinner.name)
+            val updatedString = playerWinners.joinToString(",")
+            file.edit {
+                putString("playerWin",updatedString)
+                putBoolean("playButton",false)
+            }
+        }
         super.onDestroy()
     }
 
@@ -121,5 +177,12 @@ class PlayerActivity : AppCompatActivity() {
         a.putExtra("name", playerName)
         launcher.launch(a)   //send & receive
 //        startActivity(a)          send
+    }
+
+    fun statistics(view: View) {
+        playerAudio?.stop()
+        val a = Intent(this,StatisticsActivity::class.java)
+        a.putExtra("players",players.toTypedArray())
+        startActivity(a)
     }
 }
