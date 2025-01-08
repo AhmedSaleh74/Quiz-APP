@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">An</string>
+    <string-array name="items">
+        <!--        <item>please selected</item>-->
+        <!--        <item>cairo</item>-->
+        <!--        <item>kuwait</item>-->
+        <!--        <item>ws</item>-->
+        <!--        <item>london</item>-->
+        <!--        <item>istanbul</item>-->
+        <!--        <item>baghdad</item>-->
+        <!--        <item>damascus</item>-->
+        <!--        <item>paris</item>-->
+        <!--        <item>makkah</item>-->
+    </string-array>
+</resources>
