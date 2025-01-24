@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,13 +15,25 @@ import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import com.example.an.databinding.ActivityPlayerBinding
 
-class PlayerActivity : AppCompatActivity() {
-    lateinit var playerNameText: EditText
-    lateinit var playButton: Button
-    lateinit var statsButton: Button
-    lateinit var finalPlayerWin:TextView
+class PlayerActivity : AppCompatActivity(),View.OnClickListener {
+    lateinit var binding:ActivityPlayerBinding
     lateinit var file : SharedPreferences
+    lateinit var adapter : ArrayAdapter<String>
+    val category = listOf(
+        "Please Selected",
+        "General Knowledge",
+        "Geography",
+        "Sports",
+        "Mythology",
+        "Entertainment: Video Games",
+        "Entertainment: Books",
+        "Art",
+        "History"
+    )
+    val numQuestion = listOf("Please Selected",5,10,15,20,25,30,35,40,45,50)
+    val difficulty = listOf("Please Selected","easy","hard","medium")
     val players = mutableListOf<Player>()
     val freez = mutableListOf<String>()
     var playerAudio: MediaPlayer? = null
@@ -38,7 +48,7 @@ class PlayerActivity : AppCompatActivity() {
             val countrySize = it.data?.getIntExtra("countryCitiesSize", 0)
             Toast.makeText(this, "Game finished \nScore:$score", Toast.LENGTH_SHORT).show()
             if (score != null && countrySize != null) {
-                players.add(Player(playerNameText.text.toString().lowercase().trim(), score))
+                players.add(Player(binding.playerNameText.text.toString().lowercase().trim(), score))
                 playerComplete++
                 if (score >= countrySize / 2) {
                     playerAudio = MediaPlayer.create(this, R.raw.success)
@@ -49,11 +59,11 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
             if (players.isNotEmpty()){
-                statsButton.isEnabled = true
+                binding.statsButton.isEnabled = true
             }
         }
         else {
-            val playerName = playerNameText.text.toString().lowercase().trim()
+            val playerName = binding.playerNameText.text.toString().lowercase().trim()
             outGame++
             if (outGame > 2){
                 freez.add(playerName)
@@ -65,56 +75,35 @@ class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_player)
+        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        playerNameText = findViewById(R.id.playerNameText)
-        playButton = findViewById(R.id.playButton)
-        statsButton = findViewById(R.id.statsButton)
-        finalPlayerWin = findViewById(R.id.finalPlayerWin)
-
-        playerNameText.addTextChangedListener {
-            playButton.isEnabled = playerNameText.text.isNotEmpty()
+        binding.playerNameText.addTextChangedListener {
+            binding.playButton.isEnabled = binding.playerNameText.text.isNotEmpty()
         }
-//        file = getSharedPreferences("players", MODE_PRIVATE ) //create or open file (preferences)
-//        val playerJsonString = file.getString("players","")
-//        if (playerJsonString != "" && playerJsonString != null){
-//            val playerWinners:MutableList<String> = Json.decodeFromString(playerJsonString) //Use Kotlinx Serialization
-//            val winnersString = playerWinners.joinToString(", ")
-//            finalPlayerWin.text = winnersString
-//        }
 
-        // الطريقه العاديه
+        adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,category)
+        binding.difficultySpinner.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,difficulty)
+        binding.numQuestionSpinner.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,numQuestion)
+        binding.categorySpinner.adapter = adapter
         file = getSharedPreferences("playerWin", MODE_PRIVATE)
         val playerString = file.getString("playerWin","")
-        playButton.isEnabled = file.getBoolean("playButton",false)
+        binding.playButton.isEnabled = file.getBoolean("playButton",false)
         if (!playerString.isNullOrEmpty()){
             val winners = playerString.split(",").filter { it.isNotEmpty() }.joinToString(", ")
-            finalPlayerWin.text = "Winners : $winners"
+            binding.finalPlayerWin.text = "Winners : $winners"
         }
+        binding.playButton.setOnClickListener(this)
+        binding.statsButton.setOnClickListener(this)
     }
 
     override fun onDestroy() {
         playerAudio?.stop()
-//            if (players.isNotEmpty()){   // Use Kotlinx Serialization
-//                val currentWinner = players.maxBy {it.score}
-//                val playerJsonString = file.getString("players", "")
-//                var playerWinners:MutableList<String> = mutableListOf()
-//                if (playerJsonString != null){
-//                    playerWinners = Json.decodeFromString(playerJsonString)
-//                }
-//                playerWinners.add(currentWinner.name)
-//                val updatedJsonString = Json.encodeToString(playerWinners)
-//                file.edit {
-//                    putString("players", updatedJsonString)
-//                }
-//        }
-
-        // الطريقه العاديه
         if (players.isNotEmpty()){
             val currentWinner = players.maxBy {it.score}
             val playerString = file.getString("playerWin", "")
@@ -132,9 +121,9 @@ class PlayerActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun play(view: View) {
+    fun play() {
         playerAudio?.stop()
-        val playerName = playerNameText.text.toString().lowercase().trim()
+        val playerName = binding.playerNameText.text.toString().lowercase().trim()
         if (players.any { it.name == playerName}) {
             val player = players.first { it.name == playerName }
             Toast.makeText(this, "$playerName Played before with score${player.score}", Toast.LENGTH_SHORT).show()
@@ -152,37 +141,26 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-//        var playersAfterFreez = 0
-//        val freezPlayerIndex = players.indexOfFirst { it.name == playerName }
-//        for (i in freezPlayerIndex+1 until  players.size) {
-//            if (players[i].score > -1) {
-//                playersAfterFreez++
-//            }
-//        }
-//        for (player in players){
-//            if (playerName in freez) {
-//                if (playersAfterFreez >= 2){
-//                    freez.remove(playerName)
-//                    players.remove(player)
-//                    players.add(player)
-//                    Toast.makeText(this, "You can play now", Toast.LENGTH_SHORT).show()
-//                }else{
-//                    Toast.makeText(this, "$playerName is frozen until 2 players finish playing", Toast.LENGTH_LONG).show()
-//                    return
-//                }
-//            }
-//        }
-
         val a = Intent(this, MainActivity::class.java)
         a.putExtra("name", playerName)
+        a.putExtra("category",binding.categorySpinner.selectedItem.toString())
+        a.putExtra("difficulty",binding.difficultySpinner.selectedItem.toString())
+        a.putExtra("numQuestion",binding.numQuestionSpinner.selectedItem.toString())
         launcher.launch(a)   //send & receive
 //        startActivity(a)          send
     }
 
-    fun statistics(view: View) {
+    fun statistics() {
         playerAudio?.stop()
         val a = Intent(this,StatisticsActivity::class.java)
         a.putExtra("players",players.toTypedArray())
         startActivity(a)
+    }
+
+    override fun onClick(v: View) {
+        when(v.id){
+            R.id.statsButton -> statistics()
+            R.id.playButton -> play()
+        }
     }
 }

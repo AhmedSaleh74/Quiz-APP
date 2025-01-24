@@ -11,94 +11,190 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4">
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="100dp"
+        android:alpha="0.95"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/statsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="32dp">
 
             <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_gravity="center"
+                android:id="@+id/quizIcon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="4dp"
                 android:background="@drawable/circle_background"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:src="@drawable/ic_quiz"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/welcomeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
+                android:letterSpacing="0.05"
                 android:text="Welcome to Quiz App"
                 android:textColor="#1E88E5"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/quizIcon"
+                app:layout_constraintStart_toStartOf="@+id/quizIcon"
+                app:layout_constraintTop_toBottomOf="@+id/quizIcon" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/playerNameLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:hint="Player Name here"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/welcomeText"
+                app:layout_constraintStart_toStartOf="@+id/welcomeText"
+                app:layout_constraintTop_toBottomOf="@+id/welcomeText">
 
                 <EditText
                     android:id="@+id/playerNameText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:padding="16dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/playerNameLayout"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/categoryLabel"
+                app:layout_constraintTop_toBottomOf="@+id/playerNameLayout" />
+
+            <Spinner
+                android:id="@+id/difficultySpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/categorySpinner"
+                app:layout_constraintStart_toStartOf="@+id/categorySpinner"
+                app:layout_constraintTop_toBottomOf="@+id/categorySpinner" />
+
+            <Spinner
+                android:id="@+id/numQuestionSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/difficultySpinner"
+                app:layout_constraintStart_toStartOf="@+id/difficultySpinner"
+                app:layout_constraintTop_toBottomOf="@+id/difficultySpinner" />
+
+            <TextView
+                android:id="@+id/categoryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category:"
+                android:textColor="#1E88E5"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/categorySpinner"
+                app:layout_constraintStart_toStartOf="@+id/playerNameLayout"
+                app:layout_constraintTop_toTopOf="@+id/categorySpinner" />
+
+            <TextView
+                android:id="@+id/numQuestionsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Num Ques:"
+                android:textColor="#1E88E5"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/numQuestionSpinner"
+                app:layout_constraintStart_toStartOf="@+id/difficultyLabel"
+                app:layout_constraintTop_toBottomOf="@+id/difficultySpinner" />
+
+            <TextView
+                android:id="@+id/difficultyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Difficulty:"
+                android:textColor="#1E88E5"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/difficultySpinner"
+                app:layout_constraintStart_toStartOf="@+id/categoryLabel"
+                app:layout_constraintTop_toBottomOf="@+id/categorySpinner" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/playButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:onClick="play"
-                android:padding="12dp"
+                android:layout_marginTop="16dp"
+                android:letterSpacing="0.1"
+                android:padding="16dp"
                 android:text="Play"
-                android:textSize="16sp"
-                app:cornerRadius="8dp" />
+                android:textSize="18sp"
+                app:cornerRadius="16dp"
+                app:elevation="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/numQuestionSpinner"
+                app:layout_constraintStart_toStartOf="@+id/numQuestionsLabel"
+                app:layout_constraintTop_toBottomOf="@+id/numQuestionSpinner" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/statsButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:enabled="false"
-        android:onClick="statistics"
+        android:padding="12dp"
         android:text="Show Stats"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:textSize="14sp"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:strokeWidth="2dp" />
 
     <TextView
         android:id="@+id/finalPlayerWin"
-        android:layout_width="0dp"
+        android:layout_width="224dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/material_on_surface_emphasis_medium"
-        app:layout_constraintBottom_toBottomOf="@+id/statsButton"
+        android:layout_marginBottom="42dp"
+        android:textColor="#2196F3"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/statsButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/statsButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
