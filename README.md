@@ -58,9 +58,9 @@ A dynamic and interactive quiz app built using **Kotlin** and **Volley** library
 
 ## 📸 Screenshots
 
-| Home Screen                      | Quiz Screen                      | Statistics Screen                  |
-|----------------------------------|----------------------------------|------------------------------------|
-| ![Home](1.png) | ![Quiz](2.png)  | ![Stats](3.png)
+| Home Screen                      | Quiz Screen                      | Toast Result                              | Statistics Screen                  |
+|----------------------------------|----------------------------------|------------------------------------|-------------------------------------|
+| ![Home](1.png) | ![Quiz](2.png) | ![Result](3.png) | ![Stats](4.png) |
 
 ---
 
@@ -95,5 +95,5 @@ cd quiz-app-kotlin
 
 ## 🙌 Author
 
-Developed by **[Ahmed Saleh]** – Android Developer passionate about educational apps 🚀  
+Developed by **Ahmed Saleh** – Android Developer passionate about educational apps 🚀  
 Feel free to contribute or open issues.
