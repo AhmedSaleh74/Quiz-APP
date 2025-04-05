@@ -95,5 +95,5 @@ cd quiz-app-kotlin
 
 ## 🙌 Author
 
-Developed by **[Ahmed Saleh]** – Android Developer passionate about educational apps 🚀  
+Developed by **Ahmed Saleh** – Android Developer passionate about educational apps 🚀  
 Feel free to contribute or open issues.
