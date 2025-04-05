@@ -58,11 +58,9 @@ A dynamic and interactive quiz app built using **Kotlin** and **Volley** library
 
 ## 📸 Screenshots
 
-| Home Screen                      | Quiz Screen                     | Result Screen                     | Statistics Screen                  |
-|----------------------------------|----------------------------------|------------------------------------|-------------------------------------|
-| ![Home](assets/screenshots/home.png) | ![Quiz](assets/screenshots/quiz.png) | ![Result](assets/screenshots/result.png) | ![Stats](assets/screenshots/stats.png) |
-
-> 📁 Place your screenshots inside `assets/screenshots/` and make sure to update the paths if needed.
+| Home Screen                      | Quiz Screen                      | Statistics Screen                  |
+|----------------------------------|----------------------------------|------------------------------------|
+| ![Home](1.png) | ![Quiz](2.png)  | ![Stats](3.png)
 
 ---
 
@@ -70,7 +68,7 @@ A dynamic and interactive quiz app built using **Kotlin** and **Volley** library
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/your-username/quiz-app-kotlin.git
+git clone https://github.com/AhmedSaleh74/Quiz-App.git
 cd quiz-app-kotlin
 ```
 
