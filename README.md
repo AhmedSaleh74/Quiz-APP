@@ -58,9 +58,9 @@ A dynamic and interactive quiz app built using **Kotlin** and **Volley** library
 
 ## 📸 Screenshots
 
-| Home Screen                      | Quiz Screen                      | Toast Result                              | Statistics Screen                  |
-|----------------------------------|----------------------------------|------------------------------------|-------------------------------------|
-| ![Home](1.png) | ![Quiz](2.png) | ![Result](3.png) | ![Stats](4.png) |
+| Home Screen                                     | Quiz Screen                                     | Toast Result                            | Statistics Screen                                |
+|-------------------------------------------------|-------------------------------------------------|----------------------------------|--------------------------------------------------|
+| ![Home](app/src/main/java/com/example/an/1.png) | ![Quiz](app/src/main/java/com/example/an/2.png) | ![Result](app/src/main/java/com/example/an/3.png) | ![Stats](app/src/main/java/com/example/an/4.png) |
 
 ---
 
